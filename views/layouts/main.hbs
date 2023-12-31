@@ -1,0 +1,192 @@
+<!-- views/main.hbs -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pessoas e Cargos</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="border-radius: 0px 0px 10px 10px;">
+        <a class="navbar-brand" href="#">
+            <h1 style="color: #ffffff;">{{ message }}</h1>
+        </a>
+    </nav>
+    <div class="container mt-4">
+        <h2>Cargos:</h2>
+    </div>
+    <div class="container mt-4">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#adicionarCargoModal">
+            Adicionar Cargo
+        </button>
+    </div>
+    <div class="container mt-4">
+        <div class="row">
+            {{#each cargos}}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Cargo: {{ this.nome_cargo }}</h5>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-warning" data-toggle="modal"
+                                data-target="#editarCargoModal{{ this.idCargo }}">Editar</button>
+                            <form method="post" action="/excluir-cargo">
+                                <input type="hidden" name="idCargo" value="{{ this.idCargo }}">
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="editarCargoModal{{ this.idCargo }}" tabindex="-1" role="dialog"
+                aria-labelledby="editarCargoModalLabel{{ this.idCargo }}" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editarCargoModalLabel{{ this.idCargo }}">Editar Cargo</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post" action="/editar-cargo" class="mt-4">
+                                <div class="form-group">
+                                    <label for="nomeCargo{{ this.idCargo }}">Nome do Cargo:</label>
+                                    <input type="text" class="form-control" id="nomeCargo{{ this.idCargo }}"
+                                        name="nome_cargo" value="{{ this.nome_cargo }}" required>
+                                </div>
+                                <input type="hidden" name="idCargo" value="{{ this.idCargo }}">
+                                <button type="submit" class="btn btn-primary">Editar Cargo</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <div class="container mt-4">
+    <h2>Pessoas:</h2>
+    </div>
+    <div class="container mt-4">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#adicionarPessoaModal">
+            Adicionar Pessoa
+        </button>
+    </div>
+    <div class="container mt-4">
+        <div class="row">
+            {{#each pessoas}}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Nome: {{ this.nome }}</h5>
+                        <p class="card-text">Idade: {{ this.idade }}, Salário: {{ this.salario }}</p>
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-warning" data-toggle="modal"
+                                data-target="#editarpessoaModal{{ this.id }}">Editar</button>
+                            <form method="post" action="/excluir-pessoa">
+                                <input type="hidden" name="id" value="{{ this.id }}">
+                                <button type="submit" class="btn btn-danger">Excluir</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="editarpessoaModal{{ this.id }}" tabindex="-1" role="dialog"
+                aria-labelledby="editarpessoaModalLabel{{ this.id }}" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editarpessoaModalLabel{{ this.id }}">Editar Pessoa</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form method="post" action="/editar-pessoa" class="mt-4">
+                                <input type="hidden" name="id" value="{{ this.id }}">
+                                <div class="form-group">
+                                    <label for="nomePessoaEdit">Nome:</label>
+                                    <input type="text" class="form-control" id="nomePessoaEdit" name="nome"
+                                        value="{{ this.nome }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="idadePessoaEdit">Idade:</label>
+                                    <input type="number" class="form-control" id="idadePessoaEdit" name="idade"
+                                        value="{{ this.idade }}" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="salarioPessoaEdit">Salário:</label>
+                                    <input type="number" class="form-control" id="salarioPessoaEdit" name="salario"
+                                        value="{{ this.salario }}" required>
+                                </div>
+                                <button type="submit" class="btn btn-primary">Salvar Edição</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+    <div class="modal fade" id="adicionarPessoaModal" tabindex="-1" role="dialog"
+        aria-labelledby="adicionarPessoaModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adicionarPessoaModalLabel">Adicionar Pessoa</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="/adicionar-pessoa" class="mt-4">
+                        <div class="form-group">
+                            <label for="nomePessoa">Nome:</label>
+                            <input type="text" class="form-control" id="nomePessoa" name="nome" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="idadePessoa">Idade:</label>
+                            <input type="number" class="form-control" id="idadePessoa" name="idade" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="salarioPessoa">Salário:</label>
+                            <input type="number" class="form-control" id="salarioPessoa" name="salario" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Adicionar Pessoa</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="adicionarCargoModal" tabindex="-1" role="dialog"
+        aria-labelledby="adicionarCargoModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="adicionarCargoModalLabel">Adicionar Cargo</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form method="post" action="/adicionar-cargo" class="mt-4">
+                        <div class="form-group">
+                            <label for="nomeCargo">Nome do Cargo:</label>
+                            <input type="text" class="form-control" id="nomeCargo" name="nome_cargo" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Adicionar Cargo</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>
